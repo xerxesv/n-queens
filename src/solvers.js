@@ -19,8 +19,8 @@ window.findNRooksSolution = function(n) {
 	
 	var putPieces = function(rowIndex, allowedColIndices){
 		if (rowIndex===n-1 && allowedColIndices.length > 0){
-			theBoard.togglePiece(rowIndex, allowedColIndices[i]);
-			return theBoard.rows()
+			theBoard.togglePiece(rowIndex, allowedColIndices[0]);
+			return true;
 		}
 		else{
 			for (var i = 0; i < allowedColIndices.length; i++){
@@ -28,13 +28,13 @@ window.findNRooksSolution = function(n) {
 				theBoard.togglePiece(rowIndex, allowedColIndices[i]);
 				allowedColIndices.splice(allowedColIndices.indexOf(allowedColIndices[i]),1);
 				if(putPieces(rowIndex+1, allowedColIndices)){
-					return putPieces(rowIndex+1, allowedColIndices);
+          var output = theBoard.rows()
+					return output;
 				};
 			}
 			return false;
 		}
 	}
-	
 	putPieces(0, allowedColIndices);
   solution = theBoard.rows();
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));

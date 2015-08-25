@@ -20,7 +20,7 @@
 
     rows: function() {
       return _(_.range(this.get('n'))).map(function(rowIndex) {
-        return this.get(rowIndex);
+        return this.get(rowIndex); //we don't know where this.get gets the rows from - some private variable 
       }, this);
     },
 
@@ -34,7 +34,8 @@
     },
 
     _getFirstRowColumnIndexForMinorDiagonalOn: function(rowIndex, colIndex) {
-      return colIndex + rowIndex;
+      return colIndex + rowIndex; // [2,3] returns 5. if returns > size of board, answer is invalid, no FirstRowColumnIndex exists???
+	  // use _isInBounds with 0 as first parameter to check validity of output 
     },
 
     hasAnyRooksConflicts: function() {
@@ -78,13 +79,25 @@
     // --------------------------------------------------------------
     //
     // test if a specific row on this board contains a conflict
-    hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+	// i.e. tests if a specific row has two or more pieces in it 
+	
+	// this.get returns the whole row array at that index if the param is a number
+	// returns the n of the board if the param is 'n'
+    hasRowConflictAt: function(rowIndex) { 
+		var theRow = this.get(rowIndex);
+		if (_.reduce(theRow, function(sofar, next){
+			return sofar + next;
+		}) > 1){
+			return true;
+		} else{
+			return false;
+		}
+
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+		
     },
 
 
@@ -94,7 +107,17 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+		var theCol = _.map(this.rows(), function(row){
+			return row[colIndex];
+		});
+		if (_.reduce(theCol, function(sofar, next){
+			return sofar + next;
+		}) > 1){
+			return true;
+		} else{
+			return false;
+		}
+
     },
 
     // test if any columns on this board contain conflicts
@@ -108,8 +131,17 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
+
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+		var board = this;
+		
+		var theMajorDiagonal = _.map(this.rows(), function(row){
+			if(majorDiagonalColumnIndexAtFirstRow < board.get('n')){
+				return row[majorDiagonalColumnIndexAtFirstRow];
+				majorDiagonalColumnIndexAtFirstRow++;
+			}
+		});
+		return false; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts

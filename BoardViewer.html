@@ -31,10 +31,12 @@
     <script src="src/solvers.js"></script>
     <script>
       // This function uses a board visualizer lets you view an interactive version of any piece matrix.
+	  // {n:4}
+	  var theBoard = new Board({n:4})
       window.displayBoard = function(matrix){
         $('body').html(
           new BoardView({
-            model: new Board(matrix)
+            model: theBoard
           }).render()
         );
       };

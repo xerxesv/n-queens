@@ -8,15 +8,12 @@
         height: 30px;
         text-align: center;
       }
-
       .positive {
         background-color: lightgrey;
       }
-
       .negative {
         background-color: grey;
       }
-
       .inConflict{
           background-color: red;
       }
@@ -31,12 +28,10 @@
     <script src="src/solvers.js"></script>
     <script>
       // This function uses a board visualizer lets you view an interactive version of any piece matrix.
-	  // {n:4}
-	  var theBoard = new Board({n:4})
       window.displayBoard = function(matrix){
         $('body').html(
           new BoardView({
-            model: theBoard
+            model: new Board(matrix)
           }).render()
         );
       };
@@ -48,7 +43,6 @@
           [1, 0, 0, 0],
           [0, 0, 1, 0]
         ]);
-
         var n = 4;
         findNRooksSolution(n);
         countNRooksSolutions(n);

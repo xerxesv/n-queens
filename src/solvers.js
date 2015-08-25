@@ -15,14 +15,27 @@
 
 window.findNRooksSolution = function(n) {
   var theBoard = new Board({n:n});
-  for (var i = 0; i < n; i++) {
-    for(var j = 0; j < n; j++) {
-      theBoard.togglePiece(i,j);
-      if(theBoard.hasRowConflictAt(i) || theBoard.hasColConflictAt(j)) {
-        theBoard.togglePiece(i, j);
-      }
-    }
-  }
+	var allowedColIndices = _.range(n);
+	
+	var putPieces = function(rowIndex, allowedColIndices){
+		if (rowIndex===n-1 && allowedColIndices.length > 0){
+			theBoard.togglePiece(rowIndex, allowedColIndices[i]);
+			return theBoard.rows()
+		}
+		else{
+			for (var i = 0; i < allowedColIndices.length; i++){
+				
+				theBoard.togglePiece(rowIndex, allowedColIndices[i]);
+				allowedColIndices.splice(allowedColIndices.indexOf(allowedColIndices[i]),1);
+				if(putPieces(rowIndex+1, allowedColIndices)){
+					return putPieces(rowIndex+1, allowedColIndices);
+				};
+			}
+			return false;
+		}
+	}
+	
+	putPieces(0, allowedColIndices);
   solution = theBoard.rows();
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;

@@ -13,10 +13,9 @@
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
-window.findNRooksSolution = function(n) {
+window.findNRooksSolution = function(n, start) {
   var theBoard = new Board({n:n});
 	var allowedColIndices = _.range(n);
-	
 	var putPieces = function(rowIndex, allowedColIndices){
 		if (rowIndex===n-1 && allowedColIndices.length > 0){
 			theBoard.togglePiece(rowIndex, allowedColIndices[0]);
@@ -28,7 +27,7 @@ window.findNRooksSolution = function(n) {
 				theBoard.togglePiece(rowIndex, allowedColIndices[i]);
 				allowedColIndices.splice(allowedColIndices.indexOf(allowedColIndices[i]),1);
 				if(putPieces(rowIndex+1, allowedColIndices)){
-          var output = theBoard.rows()
+          var output = theBoard.rows();
 					return output;
 				};
 			}
@@ -45,10 +44,29 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solution = undefined //fixme
+  var theBoard = new Board({n:n});
+  var allowedColIndices = _.range(n);
+  var solutionCount = 0;
 
+  var putPieces = function(rowIndex, allowedColIndices){
+   
+    for (var i = 0; i < allowedColIndices.length; i++){
+  //    theBoard.togglePiece(rowIndex, allowedColIndices[i]);
+      allowedColIndicesCopy = allowedColIndices.slice();
+      
+      allowedColIndicesCopy.splice(allowedColIndices.indexOf(allowedColIndices[i]),1);
 
-  
+      putPieces(rowIndex+1, allowedColIndicesCopy);
+      if (rowIndex === n -1 ){
+        console.log(theBoard.rows());
+        solutionCount++;
+      }  
+    
+    }
+    return "finished one branch of the tree";
+  }
+
+  putPieces(0, allowedColIndices);
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;

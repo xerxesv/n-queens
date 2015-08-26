@@ -82,28 +82,25 @@ window.findNQueensSolution = function(n) {
   var putPieces = function(theRow){
     
     if(theRow===n){
-      solution = JSON.parse(JSON.stringify(theBoard.rows()));
-      return;
+      return true;
     }
     for (var i = 0; i < n; i++){
         theBoard.togglePiece(theRow,i);
         if(!theBoard.hasAnyQueenConflictsOn(theRow,i) ){
-          putPieces(theRow+1);
+          if(putPieces(theRow+1)){
+						return true;
+					}
         }
         theBoard.togglePiece(theRow,i);
-
-      }    
+      }
+		return false;
   }
 
 
   putPieces(0);
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  if(solution===undefined){
-    solution = new Board({n:n});
-    solution = solution.rows();
-  }
-
-  return solution;
+  
+  return theBoard.rows();
 
 };
 

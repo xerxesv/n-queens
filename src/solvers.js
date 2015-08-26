@@ -85,15 +85,15 @@ window.findNQueensSolution = function(n) {
       solution = JSON.parse(JSON.stringify(theBoard.rows()));
       return;
     }
-      for (var i = 0; i < n; i++){
-          theBoard.togglePiece(theRow,i);
-          if(!theBoard.hasAnyQueenConflictsOn(theRow,i) ){
-            putPieces(theRow+1);
-          }
-          theBoard.togglePiece(theRow,i);
+    for (var i = 0; i < n; i++){
+        theBoard.togglePiece(theRow,i);
+        if(!theBoard.hasAnyQueenConflictsOn(theRow,i) ){
+          putPieces(theRow+1);
+        }
+        theBoard.togglePiece(theRow,i);
 
-        }    
-      }
+      }    
+  }
 
 
   putPieces(0);
